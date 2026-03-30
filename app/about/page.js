@@ -46,10 +46,10 @@ export default function AboutPage() {
               <span style={{ WebkitTextStroke: '1px rgba(244,240,235,.15)', color: 'transparent' }}>STUDIO</span>
             </h1>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '4rem', alignItems: 'end' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '4rem', alignItems: 'end' }} className="about-hero-grid">
               <div>
                 <p style={{ fontSize: '1.05rem', color: 'var(--muted)', lineHeight: 1.8, fontWeight: 300, marginBottom: '2rem' }}>
-                  Je suis <strong style={{ color: 'var(--white)', fontWeight: 500 }}>Diallo Roger Manassé</strong>,
+                  Je suis <strong style={{ color: 'var(--white)', fontWeight: 500 }}>Mano beat777</strong>,
                   beatmaker basé à Abidjan. Ma mission : créer des instrumentales qui donnent aux artistes
                   ivoiriens et africains les outils sonores pour exprimer leur art à un niveau international.
                 </p>
@@ -64,7 +64,7 @@ export default function AboutPage() {
               </div>
 
               {/* Stats */}
-              <div style={{ borderLeft: '1px solid var(--border)', paddingLeft: '2rem' }}>
+              <div style={{ borderLeft: '1px solid var(--border)', paddingLeft: '2rem' }} className="about-hero-photo">
                 {[
                   { val: '100%', label: 'Libre de droits' },
                   { val: '24H', label: 'Livraison max' },
@@ -79,13 +79,6 @@ export default function AboutPage() {
             </div>
           </motion.div>
         </div>
-
-        <style>{`
-          @media(max-width:768px){
-            section:first-of-type > div:last-child > div:last-child { grid-template-columns: 1fr !important; }
-            section:first-of-type > div:last-child > div:last-child > div:last-child { border-left: none !important; border-top: 1px solid var(--border); padding-left: 0 !important; padding-top: 1.5rem; display: flex; gap: 2rem; }
-          }
-        `}</style>
       </section>
 
       {/* GENRES */}

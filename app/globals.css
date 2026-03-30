@@ -177,6 +177,43 @@ body::after {
   .hide-mobile { display: none !important; }
   body { padding-bottom: 110px; cursor: auto; }
   .cursor-dot, .cursor-ring { display: none; }
+
+  /* Stats grid : 4 cols → 2×2 */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .stat-item { border-right: none !important; }
+  .stat-item-0,
+  .stat-item-2 { border-right: 1px solid var(--border) !important; }
+  .stat-item-0,
+  .stat-item-1 { border-bottom: none !important; }
+
+  /* Process grid : 4 cols → 2×2 */
+  .process-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .process-item { border-right: none !important; border-bottom: 1px solid var(--border) !important; }
+  .process-item-0,
+  .process-item-2 { border-right: 1px solid var(--border) !important; }
+
+  /* About hero : photo au-dessus du texte */
+  .about-hero-grid {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+  .about-hero-photo {
+    order: -1 !important;
+    border-left: none !important;
+    padding-left: 0 !important;
+    padding-top: 1.5rem !important;
+    border-top: 1px solid var(--border) !important;
+    display: flex !important;
+    gap: 2rem !important;
+  }
+
+  /* AboutTeaser section */
+  .about-teaser-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
+  footer > div > div:first-child { grid-template-columns: 1fr !important; }
 }
 
 /* ── BEAT CARD ── */
@@ -205,9 +242,11 @@ body::after {
 }
 
 /* ── RESPONSIVE FIXES (moved from inline styles) ── */
+/* Hamburger / éléments mobiles seulement */
+.show-mobile { display: none; }
+
 @media(max-width:768px){
   .about-teaser-grid > div > div { grid-template-columns: 1fr !important; gap: 2rem !important; }
   footer > div > div:first-child { grid-template-columns: 1fr !important; }
   .show-mobile { display: flex !important; }
 }
-.show-mobile { display: none !important; }

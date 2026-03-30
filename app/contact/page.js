@@ -136,7 +136,7 @@ export default function ContactPage() {
         </div>
       </div>
 
-      <style>{`
+      <style suppressHydrationWarning>{`
         @media(max-width:768px){
           div[style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
         }
