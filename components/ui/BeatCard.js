@@ -17,7 +17,7 @@ function Waveform({ active, playing }) {
 }
 
 export default function BeatCard({ beat, index = 0 }) {
-  const { currentBeat, isPlaying, loading, play } = usePlayer()
+  const { currentBeat, isPlaying, loading, play, preload } = usePlayer()
   const isActive = currentBeat?.id === beat.id
   const isThisPlaying = isActive && isPlaying
   const isLoading = isActive && loading
@@ -27,7 +27,8 @@ export default function BeatCard({ beat, index = 0 }) {
       initial={{ opacity: 0, y: 32 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: .5, delay: index * .06 }}
-      className={`beat-card ${isActive ? 'active' : ''}`}>
+      className={`beat-card ${isActive ? 'active' : ''}`}
+      onMouseEnter={() => preload(beat)}>
 
       {isActive && (
         <div style={{ height: 2, background: 'linear-gradient(90deg, var(--gold), var(--gold2))', position: 'absolute', top: 0, left: 0, right: 0, zIndex: 1 }} />
