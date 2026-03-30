@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DRIP BEATZ — Connexion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@400;600;700&family=Orbitron:wght@900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --accent: #a855f7; --accent2: #c084fc; }
+    body {
+      background: #09060f; color: rgba(255,255,255,.88);
+      font-family: 'Space Grotesk', sans-serif;
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    /* Mesh bg */
+    .bg-orb1 { position: fixed; top:-10%; left:-5%; width:55%; height:65%; background:radial-gradient(ellipse,rgba(168,85,247,.14),transparent 65%); pointer-events:none; animation: float1 12s ease-in-out infinite; }
+    .bg-orb2 { position: fixed; bottom:-5%; right:-5%; width:50%; height:55%; background:radial-gradient(ellipse,rgba(124,58,237,.1),transparent 65%); pointer-events:none; animation: float2 15s ease-in-out infinite; }
+    .grid-bg { position:fixed; inset:0; background-image:linear-gradient(rgba(168,85,247,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(168,85,247,.05) 1px,transparent 1px); background-size:60px 60px; pointer-events:none; }
+    @keyframes float1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(30px,-20px)} }
+    @keyframes float2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-25px,30px)} }
+
+    .login-box {
+      background: linear-gradient(145deg, #160e28, #110e1c);
+      border: 1px solid rgba(168,85,247,.22);
+      border-radius: 24px;
+      padding: 3rem 2.5rem;
+      width: 100%; max-width: 400px;
+      position: relative; z-index: 1;
+      box-shadow: 12px 12px 40px rgba(0,0,0,.7), -4px -4px 20px rgba(168,85,247,.06), 0 0 60px rgba(168,85,247,.08);
+    }
+    .login-box::before {
+      content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 60%; height: 1px; background: linear-gradient(90deg,transparent,rgba(168,85,247,.6),transparent);
+    }
+    .login-icon { width: 64px; height: 64px; border-radius: 18px; background: linear-gradient(135deg,#a855f7,#7c3aed); display:flex; align-items:center; justify-content:center; font-size:1.8rem; margin:0 auto 1.5rem; box-shadow:0 0 28px rgba(168,85,247,.5); }
+    .login-title { font-family:'Orbitron',sans-serif; font-weight:900; font-size:1.1rem; text-align:center; letter-spacing:.1em; color:#fff; margin-bottom:.4rem; }
+    .login-sub { font-family:'JetBrains Mono',monospace; font-size:.6rem; color:rgba(168,85,247,.55); letter-spacing:.12em; text-align:center; margin-bottom:2rem; }
+    .sep { height:1px; background:rgba(168,85,247,.12); margin:1.5rem 0; }
+    label { display:block; font-family:'JetBrains Mono',monospace; font-size:.58rem; color:rgba(255,255,255,.28); letter-spacing:.1em; text-transform:uppercase; margin-bottom:.5rem; }
+    input[type=password] {
+      width:100%; padding:.85rem 1.1rem;
+      background:rgba(168,85,247,.08); border:1px solid rgba(168,85,247,.2);
+      border-radius:12px; color:#fff; font-family:'Space Grotesk',sans-serif; font-size:.92rem;
+      outline:none; transition:border-color .18s; letter-spacing:.05em;
+    }
+    input[type=password]:focus { border-color:rgba(168,85,247,.55); box-shadow:0 0 0 3px rgba(168,85,247,.1); }
+    .btn-login {
+      width:100%; margin-top:1.5rem; padding:1rem;
+      background:linear-gradient(145deg,#b060ff,#7c3aed); color:#fff;
+      font-family:'Syne',sans-serif; font-weight:700; font-size:.95rem;
+      border:none; border-radius:12px; cursor:pointer;
+      box-shadow:4px 4px 14px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.15);
+      transition:all .2s;
+    }
+    .btn-login:hover { transform:translateY(-2px); filter:brightness(1.1); }
+    .error-msg { background:rgba(239,68,68,.12); border:1px solid rgba(239,68,68,.25); color:#f87171; padding:.7rem 1rem; border-radius:10px; font-size:.82rem; margin-bottom:1.2rem; display:flex; align-items:center; gap:.5rem; }
+  </style>
+</head>
+<body>
+  <div class="bg-orb1"></div>
+  <div class="bg-orb2"></div>
+  <div class="grid-bg"></div>
+
+  <div class="login-box">
+    <div class="login-icon">🎧</div>
+    <div class="login-title">DRIP BEATZ</div>
+    <div class="login-sub">// ESPACE BEATMAKER</div>
+    <div class="sep"></div>
+
+    {% if error %}
+    <div class="error-msg">✗ {{ error }}</div>
+    {% endif %}
+
+    <form method="POST" action="{{ url_for('login') }}">
+      <label for="password">Mot de passe</label>
+      <input type="password" id="password" name="password" placeholder="••••••••" autofocus autocomplete="current-password" />
+      <button type="submit" class="btn-login">Accéder au dashboard →</button>
+    </form>
+  </div>
+</body>
+</html>

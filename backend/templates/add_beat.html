@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% block title %}Ajouter un beat — DRIP BEATZ{% endblock %}
+{% block page_title %}➕ Ajouter un beat{% endblock %}
+
+{% block content %}
+<div style="max-width:820px">
+
+  <form method="POST" action="{{ url_for('add_beat') }}" enctype="multipart/form-data">
+
+    <div style="display:grid;grid-template-columns:1fr 160px;gap:1.5rem;align-items:start">
+
+      <!-- Left: champs -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">🎵 Informations du beat</span>
+        </div>
+        <div class="card-body" style="display:flex;flex-direction:column;gap:1.2rem">
+
+          <!-- Titre -->
+          <div class="field">
+            <label>Titre *</label>
+            <input type="text" name="title" placeholder="ABIDJAN NIGHTS" required autocomplete="off" />
+          </div>
+
+          <!-- Drive ID -->
+          <div class="field">
+            <label>Lien ou ID Google Drive *</label>
+            <input type="text" name="drive_id" placeholder="https://drive.google.com/file/d/1BxiMVs...  ou  1BxiMVs0XRA..." required />
+            <span class="hint">ℹ️ Colle le lien complet ou juste l'ID — on l'extrait automatiquement</span>
+          </div>
+
+          <div class="form-grid">
+            <!-- Genre -->
+            <div class="field">
+              <label>Genre</label>
+              <select name="genre">
+                <option value="">— Choisir —</option>
+                <option>Afro Trap</option>
+                <option>Afrobeat</option>
+                <option>UK Drill</option>
+                <option>RnB Afro</option>
+                <option>Trap Hard</option>
+                <option>Coupé-Décalé Fusion</option>
+                <option>Dancehall</option>
+                <option>Reggaeton</option>
+                <option>Hip-Hop</option>
+                <option>Cloud Rap</option>
+                <option>Autre</option>
+              </select>
+            </div>
+            <!-- Mood -->
+            <div class="field">
+              <label>Emoji / Mood</label>
+              <input type="text" name="mood" placeholder="🌙 🔥 💜 ⚔️ 🌅" maxlength="4" />
+            </div>
+          </div>
+
+          <div class="form-grid cols-3">
+            <!-- BPM -->
+            <div class="field">
+              <label>BPM</label>
+              <input type="number" name="bpm" placeholder="142" min="60" max="200" />
+            </div>
+            <!-- Tonalité -->
+            <div class="field">
+              <label>Tonalité</label>
+              <select name="key">
+                <option value="">—</option>
+                {% for k in ['C','Cm','C#','D','Dm','D#','E','Em','F','Fm','F#','G','Gm','G#','A','Am','A#','B','Bm'] %}
+                <option>{{ k }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <!-- Prix -->
+            <div class="field">
+              <label>Prix</label>
+              <input type="text" name="price" placeholder="15 000 FCFA" />
+            </div>
+          </div>
+
+          <!-- Tags -->
+          <div class="field">
+            <label>Tags (séparés par des virgules)</label>
+            <input type="text" name="tags" placeholder="Trap, Dark, Afro" />
+            <span class="hint">Exemples : Sombre, Melodic, Hard, Dance, Romantique…</span>
+          </div>
+
+          <!-- Featured -->
+          <label class="checkbox-field">
+            <input type="checkbox" name="featured" />
+            ⭐ Mettre en avant sur la page d'accueil
+          </label>
+
+        </div>
+      </div>
+
+      <!-- Right: cover -->
+      <div style="display:flex;flex-direction:column;gap:1rem">
+        <div class="card">
+          <div class="card-header"><span class="card-title">🖼️ Cover</span></div>
+          <div class="card-body" style="display:flex;flex-direction:column;align-items:center;gap:.8rem">
+            <label for="cover-input" style="cursor:pointer;width:100%">
+              <div class="cover-preview" id="cover-preview" style="max-width:100%;aspect-ratio:1">
+                <span id="cover-placeholder" style="font-size:2rem;opacity:.3">🎵</span>
+                <img id="cover-img" style="display:none;width:100%;height:100%;object-fit:cover" alt="cover" />
+                <div class="cover-overlay">Changer</div>
+              </div>
+            </label>
+            <input type="file" name="cover" id="cover-input" accept="image/*" style="display:none" onchange="previewCover(this)" />
+            <span style="font-family:'JetBrains Mono',monospace;font-size:.56rem;color:var(--text-muted);text-align:center">JPG, PNG, WEBP · max 5MB</span>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:.85rem">
+          ✓ Enregistrer
+        </button>
+        <a href="{{ url_for('dashboard') }}" class="btn btn-ghost-sm" style="width:100%;justify-content:center;display:flex">
+          ← Annuler
+        </a>
+      </div>
+
+    </div><!-- /grid -->
+  </form>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function previewCover(input) {
+  const file = input.files[0]
+  if (!file) return
+  const reader = new FileReader()
+  reader.onload = e => {
+    document.getElementById('cover-placeholder').style.display = 'none'
+    const img = document.getElementById('cover-img')
+    img.src = e.target.result
+    img.style.display = 'block'
+  }
+  reader.readAsDataURL(file)
+}
+</script>
+{% endblock %}

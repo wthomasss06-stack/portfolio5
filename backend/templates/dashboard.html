@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard — Mes Beats{% endblock %}
+{% block page_title %}Vue d'ensemble{% endblock %}
+
+{% block content %}
+
+<!-- Stats -->
+<div class="stat-grid" style="margin-bottom:2rem">
+  <div class="stat-card">
+    <div class="stat-icon">🎵</div>
+    <div class="stat-val">{{ total }}</div>
+    <div class="stat-label">Beats au catalogue</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon">⭐</div>
+    <div class="stat-val">{{ featured }}</div>
+    <div class="stat-label">Beats en avant</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon">🎼</div>
+    <div class="stat-val" style="font-size:1rem;margin-top:.4rem">{{ genres|length }}</div>
+    <div class="stat-label">Genres différents</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon">🔗</div>
+    <div class="stat-val" style="font-size:.75rem;margin-top:.5rem;color:rgba(168,85,247,.7)">/api/beats</div>
+    <div class="stat-label">Endpoint Next.js</div>
+  </div>
+</div>
+
+<!-- Grid principal -->
+<div style="display:grid;grid-template-columns:1fr 280px;gap:1.5rem;align-items:start">
+
+  <!-- Table -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">📋 Mes beats</span>
+      <a href="{{ url_for('add_beat') }}" class="btn btn-primary" style="font-size:.76rem;padding:.4rem .9rem">➕ Ajouter</a>
+    </div>
+
+    {% if beats %}
+    <div style="overflow-x:auto">
+      <table class="beats-table">
+        <thead>
+          <tr>
+            <th>Beat</th>
+            <th>Genre</th>
+            <th>BPM</th>
+            <th>Prix</th>
+            <th>En avant</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for beat in beats %}
+          <tr>
+            <td>
+              <div class="beat-title-cell">
+                <div class="beat-cover-mini" style="background:linear-gradient(135deg,rgba(168,85,247,.2),rgba(9,6,15,.8))">
+                  {% if beat.cover %}
+                    <img src="{{ url_for('static', filename='uploads/' ~ beat.cover) }}" alt=""
+                         style="width:100%;height:100%;object-fit:cover;border-radius:10px">
+                  {% else %}
+                    {{ beat.mood }}
+                  {% endif %}
+                </div>
+                <div>
+                  <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:.85rem;color:#fff">{{ beat.title }}</div>
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:.56rem;color:rgba(168,85,247,.5)">{{ beat.key }}</div>
+                </div>
+              </div>
+            </td>
+            <td><span class="badge badge-purple">{{ beat.genre or '—' }}</span></td>
+            <td><span class="mono" style="color:rgba(255,255,255,.4);font-size:.78rem">{{ beat.bpm or '—' }}</span></td>
+            <td><span style="font-family:'Orbitron',sans-serif;font-weight:700;font-size:.78rem;color:var(--accent2)">{{ beat.price or '—' }}</span></td>
+            <td>
+              <label class="toggle">
+                <input type="checkbox" {% if beat.featured %}checked{% endif %}
+                  onchange="toggleFeatured({{ beat.id }}, this)">
+                <span class="toggle-slider"></span>
+              </label>
+            </td>
+            <td>
+              <div style="display:flex;gap:.4rem">
+                <a href="{{ url_for('edit_beat', bid=beat.id) }}" class="btn btn-ghost-sm btn-icon" title="Modifier">✏️</a>
+                <form method="POST" action="{{ url_for('delete_beat', bid=beat.id) }}"
+                  onsubmit="return confirm('Supprimer « {{ beat.title }} » ?')">
+                  <button type="submit" class="btn btn-danger-sm btn-icon">🗑️</button>
+                </form>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+      <div class="empty-icon">🎵</div>
+      <p>Aucun beat pour l'instant.<br>Ajoute ton premier son !</p>
+      <a href="{{ url_for('add_beat') }}" class="btn btn-primary">➕ Ajouter un beat</a>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- Colonne droite -->
+  <div style="display:flex;flex-direction:column;gap:1.2rem">
+
+    <!-- Genres -->
+    {% if genres %}
+    <div class="card">
+      <div class="card-header"><span class="card-title">🎼 Par genre</span></div>
+      <div class="card-body" style="padding:1.2rem 1.4rem">
+        {% set max_count = genres.values()|max %}
+        {% for g, count in genres.items() %}
+        <div class="genre-bar-item">
+          <span class="genre-bar-label">{{ g or '—' }}</span>
+          <div class="genre-bar-track">
+            <div class="genre-bar-fill" style="width:{{ (count / max_count * 100)|int }}%"></div>
+          </div>
+          <span class="genre-bar-count">{{ count }}</span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- API info -->
+    <div class="card">
+      <div class="card-header"><span class="card-title">🔗 API Next.js</span></div>
+      <div class="card-body">
+        <p style="font-size:.78rem;color:var(--text-sub);line-height:1.7;margin-bottom:1rem">
+          Endpoint public que ton site Vercel fetch pour afficher les beats :
+        </p>
+        <div style="background:rgba(168,85,247,.07);border:1px solid rgba(168,85,247,.15);border-radius:10px;padding:.8rem;font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--accent2);word-break:break-all">
+          GET /api/beats
+        </div>
+        <a href="{{ url_for('api_beats') }}" target="_blank" class="btn btn-ghost-sm"
+           style="margin-top:.9rem;width:100%;justify-content:center;display:flex">
+          Tester l'API →
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+async function toggleFeatured(id, cb) {
+  try {
+    const r = await fetch(`/beats/${id}/toggle-featured`, { method: 'POST' })
+    const d = await r.json()
+    cb.checked = d.featured
+  } catch(e) { cb.checked = !cb.checked }
+}
+</script>
+{% endblock %}
