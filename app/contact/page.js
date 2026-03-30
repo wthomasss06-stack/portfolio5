@@ -3,16 +3,21 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import {
   ExternalLink, MessageCircle, Instagram,
-  Music2, Youtube, Play,
+  Music2, Youtube,
   CreditCard, FileAudio, Clock, BadgeCheck
 } from 'lucide-react'
 import { BEATMAKER, getBeats } from '@/lib/beats-data'
 
 export default function ContactPage() {
   const [beats, setBeats] = useState([])
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     getBeats().then(setBeats)
+    const check = () => setIsMobile(window.innerWidth <= 768)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
   }, [])
 
   const socials = [
@@ -26,34 +31,34 @@ export default function ContactPage() {
     <div style={{ minHeight: '100vh', background: 'var(--black)', paddingTop: 68 }}>
 
       {/* Header */}
-      <section style={{ padding: '5rem 5% 4rem', borderBottom: '1px solid var(--border)', position: 'relative', overflow: 'hidden' }}>
+      <section style={{ padding: 'clamp(3rem,8vw,5rem) 5% clamp(2rem,5vw,4rem)', borderBottom: '1px solid var(--border)', position: 'relative', overflow: 'hidden' }}>
         <div className="grid-bg" style={{ position: 'absolute', inset: 0, opacity: .4 }} />
         <div style={{ maxWidth: 1200, margin: '0 auto', position: 'relative', zIndex: 1 }}>
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <div className="section-label">// Contact</div>
-            <h1 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 'clamp(4rem, 10vw, 9rem)', lineHeight: .88, color: 'var(--white)', marginBottom: '1.5rem' }}>
+            <h1 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 'clamp(3.2rem, 10vw, 9rem)', lineHeight: .88, color: 'var(--white)', marginBottom: '1.5rem' }}>
               ON BOSSE<br />
               <span style={{ color: 'var(--gold)' }}>ENSEMBLE ?</span>
             </h1>
-            <p style={{ fontSize: '1rem', color: 'var(--muted)', maxWidth: 480, lineHeight: 1.7 }}>
+            <p style={{ fontSize: 'clamp(.85rem,2vw,1rem)', color: 'var(--muted)', maxWidth: 480, lineHeight: 1.7 }}>
               {BEATMAKER.bio} · Disponible pour des beats standards et des productions custom.
             </p>
           </motion.div>
         </div>
       </section>
 
-      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '4rem 5%' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3rem', alignItems: 'start' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: 'clamp(2rem,5vw,4rem) 5%' }}>
+        <div className="contact-grid">
 
           {/* Left */}
           <div>
             {/* Big WA CTA */}
             <motion.div
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .1 }}
-              style={{ background: '#25d366', padding: '3rem', marginBottom: '1.5rem', position: 'relative', overflow: 'hidden' }}>
+              style={{ background: '#25d366', padding: 'clamp(1.8rem,5vw,3rem)', marginBottom: '1.5rem', position: 'relative', overflow: 'hidden' }}>
               <div style={{ position: 'absolute', top: '-2rem', right: '-2rem', fontFamily: "'Bebas Neue', sans-serif", fontSize: '8rem', color: 'rgba(0,0,0,.06)', lineHeight: 1, userSelect: 'none' }}>WA</div>
               <div style={{ position: 'relative', zIndex: 1 }}>
-                <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '2.5rem', color: '#fff', letterSpacing: '.04em', marginBottom: '.5rem' }}>
+                <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 'clamp(1.8rem,5vw,2.5rem)', color: '#fff', letterSpacing: '.04em', marginBottom: '.5rem' }}>
                   WHATSAPP DIRECT
                 </h2>
                 <p style={{ fontSize: '.88rem', color: 'rgba(255,255,255,.8)', marginBottom: '2rem', lineHeight: 1.6 }}>
@@ -61,18 +66,18 @@ export default function ContactPage() {
                 </p>
                 <a href={`https://wa.me/${BEATMAKER.whatsapp}?text=${encodeURIComponent('Bonjour ! Je veux acheter un beat.')}`}
                   target="_blank" rel="noreferrer"
-                  style={{ display: 'inline-flex', alignItems: 'center', gap: '.5rem', padding: '1rem 2rem', background: '#fff', color: '#25d366', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: '.88rem', letterSpacing: '.06em', textTransform: 'uppercase', borderRadius: 2 }}>
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: '.5rem', padding: '.9rem 1.8rem', background: '#fff', color: '#25d366', fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: '.88rem', letterSpacing: '.06em', textTransform: 'uppercase', borderRadius: 2, whiteSpace: 'nowrap' }}>
                   <MessageCircle size={16} /> Ouvrir WhatsApp
                 </a>
               </div>
             </motion.div>
 
-            {/* Socials */}
+            {/* Socials — 2x2 grid toujours */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1px', background: 'var(--border)' }}>
               {socials.map(({ name, icon, url, desc }, i) => (
                 <motion.a key={name} href={url} target="_blank" rel="noreferrer"
                   initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .15 + i * .07 }}
-                  style={{ padding: '1.5rem', background: 'var(--black3)', display: 'block', transition: 'background .2s' }}
+                  style={{ padding: 'clamp(1rem,3vw,1.5rem)', background: 'var(--black3)', display: 'block', transition: 'background .2s' }}
                   onMouseEnter={e => e.currentTarget.style.background = 'var(--black4)'}
                   onMouseLeave={e => e.currentTarget.style.background = 'var(--black3)'}>
                   <div style={{ marginBottom: '.6rem' }}>{icon}</div>
@@ -87,7 +92,7 @@ export default function ContactPage() {
           </div>
 
           {/* Right - Beat list */}
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: .3 }}>
+          <motion.div initial={{ opacity: 0, x: isMobile ? 0 : 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: .3 }}>
             <div className="section-label" style={{ marginBottom: '1.2rem' }}>// Acheter un beat précis</div>
             <p style={{ fontSize: '.82rem', color: 'var(--muted)', marginBottom: '1.5rem' }}>
               Clique pour ouvrir WhatsApp avec le nom du beat déjà écrit.
@@ -102,14 +107,14 @@ export default function ContactPage() {
                     style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem 1.2rem', borderBottom: i < beats.length - 1 ? '1px solid var(--border)' : 'none', transition: 'background .2s' }}
                     onMouseEnter={e => { e.currentTarget.style.background = 'var(--black3)' }}
                     onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '.8rem' }}>
-                      <Music2 size={18} color="rgba(201,168,76,.4)" />
-                      <div>
-                        <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: '.85rem', color: 'var(--white)' }}>{beat.title}</div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '.8rem', minWidth: 0 }}>
+                      <Music2 size={18} color="rgba(201,168,76,.4)" style={{ flexShrink: 0 }} />
+                      <div style={{ minWidth: 0 }}>
+                        <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: '.85rem', color: 'var(--white)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{beat.title}</div>
                         <div style={{ fontFamily: "'DM Mono', monospace", fontSize: '.58rem', color: 'var(--muted)', letterSpacing: '.06em' }}>{beat.genre}</div>
                       </div>
                     </div>
-                    <div style={{ fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: '.82rem', color: 'var(--gold)', flexShrink: 0 }}>{beat.price}</div>
+                    <div style={{ fontFamily: "'DM Mono', monospace", fontWeight: 700, fontSize: '.82rem', color: 'var(--gold)', flexShrink: 0, marginLeft: '1rem' }}>{beat.price}</div>
                   </a>
                 ))}
               </div>
@@ -133,12 +138,23 @@ export default function ContactPage() {
               </div>
             </div>
           </motion.div>
+
         </div>
       </div>
 
       <style suppressHydrationWarning>{`
-        @media(max-width:768px){
-          div[style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
+        .contact-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 3rem;
+          align-items: start;
+        }
+
+        @media (max-width: 768px) {
+          .contact-grid {
+            grid-template-columns: 1fr !important;
+            gap: 2rem !important;
+          }
         }
       `}</style>
     </div>
